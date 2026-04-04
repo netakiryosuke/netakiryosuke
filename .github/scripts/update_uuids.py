@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-PAGE_SIZE = 50
+LATEST_DISPLAY_COUNT = 10
 REPO_ROOT = Path(__file__).parent.parent.parent
 UUIDS_FILE = REPO_ROOT / "uuids.txt"
 README_FILE = REPO_ROOT / "README.md"
@@ -112,14 +112,18 @@ def check_duplicates(uuids: list[str]) -> list[str]:
     return duplicates
 
 
+LATEST_DISPLAY_COUNT = 10
+
+
 def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str]) -> str:
     """README.mdの内容を生成する。"""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     total_uuids = len(uuids)
 
-    # 新しく発行された順（末尾が最新）を逆順にしてPage1に最新を表示する
+    # 新しく発行された順（末尾が最新）を逆順にして最新を先頭に表示する
     display_uuids = list(reversed(uuids))
-    total_pages = (total_uuids + PAGE_SIZE - 1) // PAGE_SIZE
+    latest = display_uuids[:LATEST_DISPLAY_COUNT]
+    rest = display_uuids[LATEST_DISPLAY_COUNT:]
 
     lines = [
         "このアカウントの GitHub Contribution の数（全期間累計）と同じ数だけUUID v4を発行します。",
@@ -146,15 +150,17 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         lines.append("---")
         lines.append("")
 
-    for page in range(total_pages):
-        start = page * PAGE_SIZE
-        end = min(start + PAGE_SIZE, total_uuids)
+    # 最新10件はそのまま表示
+    for u in latest:
+        lines.append(f"`{u}`  ")
+    lines.append("")
+
+    # 残りは折りたたみ
+    if rest:
         lines.append("<details>")
-        lines.append(
-            f"<summary>Page {page + 1}（最新#{total_uuids - start}〜#{total_uuids - end + 1}）</summary>"
-        )
+        lines.append(f"<summary>過去のUUID（{len(rest)}件）</summary>")
         lines.append("")
-        for u in display_uuids[start:end]:
+        for u in rest:
             lines.append(f"`{u}`  ")
         lines.append("")
         lines.append("</details>")
