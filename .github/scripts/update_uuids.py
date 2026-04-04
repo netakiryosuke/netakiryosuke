@@ -125,12 +125,17 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
     latest = display_uuids[:LATEST_DISPLAY_COUNT]
     rest = display_uuids[LATEST_DISPLAY_COUNT:]
 
+    dup_status = "✅ なし" if not duplicates else f"⚠️ {len(duplicates)}件"
+
     lines = [
-        "このアカウントの GitHub Contribution の数（全期間累計）と同じ数だけUUID v4を発行します。",
+        "## Hi there 👋",
+        "",
+        "このアカウントの GitHub Contribution の数と同じ数だけUUID v4を発行します。",
         "毎日 0:00（JST）に生成を行い、重複した場合このアカウントを削除します。",
         "",
         f"> Contribution数: {total_contributions}  ",
         f"> 発行UUID数: {total_uuids}  ",
+        f"> 重複: {dup_status}  ",
         f"> 最終更新: {now}",
         "",
     ]
