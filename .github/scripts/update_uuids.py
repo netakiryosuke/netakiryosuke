@@ -103,10 +103,8 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
     total_pages = (total_uuids + PAGE_SIZE - 1) // PAGE_SIZE
 
     lines = [
-        "## Hi there 👋",
-        "",
-        "これは私のGitHub Contributionの数（全期間累計）と同じ数だけUUID v4を発行したものです。",
-        "世界中で1つでも同じUUIDが存在したら、このアカウントを削除します。",
+        "このアカウントの GitHub Contribution の数（全期間累計）と同じ数だけUUID v4を発行します。",
+        "毎日 0:00（JST）に生成を行い、重複した場合このアカウントを削除します。",
         "",
         f"> Contribution数: {total_contributions}  ",
         f"> 発行UUID数: {total_uuids}  ",
