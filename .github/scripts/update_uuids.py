@@ -112,10 +112,36 @@ def check_duplicates(uuids: list[str]) -> list[str]:
     return duplicates
 
 
+def find_closest_pair(uuids: list[str]) -> tuple[int, int, int, int]:
+    """ハミング類似度が最大のペアを返す。
+    返り値: (インデックスi, インデックスj, 一致文字数, UUID長)
+    インデックスはuuids.txt上の行番号（0始まり）に対応。
+    """
+    # ハイフン除去した32文字で比較
+    normalized = [u.replace("-", "") for u in uuids]
+    uuid_len = len(normalized[0]) if normalized else 32
+
+    best_matches = 0
+    best_i = 0
+    best_j = 1
+
+    for i in range(len(normalized)):
+        a = normalized[i]
+        for j in range(i + 1, len(normalized)):
+            b = normalized[j]
+            matches = sum(ca == cb for ca, cb in zip(a, b))
+            if matches > best_matches:
+                best_matches = matches
+                best_i = i
+                best_j = j
+
+    return best_i, best_j, best_matches, uuid_len
+
+
 LATEST_DISPLAY_COUNT = 10
 
 
-def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str]) -> str:
+def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str], closest: tuple[int, int, int, int]) -> str:
     """README.mdの内容を生成する。"""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     total_uuids = len(uuids)
@@ -171,6 +197,29 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         lines.append("</details>")
         lines.append("")
 
+    # 最近接ペア（ハミング類似度が最大のペア）を表示
+    if total_uuids >= 2:
+        ci, cj, matches, uuid_len = closest
+        ua = uuids[ci]
+        ub = uuids[cj]
+        lines.append("<details>")
+        lines.append(f"<summary>👯 最も似ているUUIDペア（{uuid_len}文字中{matches}文字一致）</summary>")
+        lines.append("")
+        lines.append(f"- #{ci + 1}: `{ua}`")
+        lines.append(f"- #{cj + 1}: `{ub}`")
+        lines.append("")
+        # どの位置が一致しているか可視化（ハイフン除去で比較）
+        na, nb = ua.replace("-", ""), ub.replace("-", "")
+        highlight = "".join("^" if a == b else " " for a, b in zip(na, nb))
+        lines.append("```")
+        lines.append(na)
+        lines.append(nb)
+        lines.append(highlight)
+        lines.append("```")
+        lines.append("")
+        lines.append("</details>")
+        lines.append("")
+
     return "\n".join(lines)
 
 
@@ -200,7 +249,12 @@ def main() -> None:
     else:
         print("重複なし ✅")
 
-    readme = generate_readme(uuids, total, duplicates)
+    print("最近接ペアを探索中...")
+    closest = find_closest_pair(uuids)
+    ci, cj, matches, uuid_len = closest
+    print(f"  -> #{ci + 1} と #{cj + 1} が {uuid_len}文字中 {matches}文字一致")
+
+    readme = generate_readme(uuids, total, duplicates, closest)
     README_FILE.write_text(readme)
     print("README.md を更新しました")
 
