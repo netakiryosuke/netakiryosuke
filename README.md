@@ -1,14 +1,12 @@
-## Hi there 👋
-
-これは私のGitHub Contributionの数（全期間累計）と同じ数だけUUID v4を発行したものです。
-世界中で1つでも同じUUIDが存在したら、このアカウントを削除します。
+このアカウントの GitHub Contribution の数（全期間累計）と同じ数だけUUID v4を発行します。
+毎日 0:00（JST）に生成を行い、重複した場合このアカウントを削除します。
 
 > Contribution数: 672  
 > 発行UUID数: 672  
 > 最終更新: 2026-04-04
 
 <details>
-<summary>📄 Page 1（最新#672〜#623）</summary>
+<summary>Page 1（最新#672〜#623）</summary>
 
 `053aefde-2079-4dc6-887a-4deaf94157be`  
 `f0ccd89c-d81b-4205-a80b-a4cd3cd65952`  
@@ -64,7 +62,7 @@
 </details>
 
 <details>
-<summary>📄 Page 2（最新#622〜#573）</summary>
+<summary>Page 2（最新#622〜#573）</summary>
 
 `ace33600-0702-426e-8de4-1ff4426fc975`  
 `68391321-4afa-480a-9ef6-c77b47e8014a`  
@@ -120,7 +118,7 @@
 </details>
 
 <details>
-<summary>📄 Page 3（最新#572〜#523）</summary>
+<summary>Page 3（最新#572〜#523）</summary>
 
 `15fe2c16-0677-493b-bb87-23bdac42823e`  
 `024fb376-6724-4527-a7ca-c99e40d60052`  
@@ -176,7 +174,7 @@
 </details>
 
 <details>
-<summary>📄 Page 4（最新#522〜#473）</summary>
+<summary>Page 4（最新#522〜#473）</summary>
 
 `ecf792ee-af2d-4a5e-b688-581040533175`  
 `77e346a2-28f9-488b-a6cf-edc3997d653f`  
@@ -232,7 +230,7 @@
 </details>
 
 <details>
-<summary>📄 Page 5（最新#472〜#423）</summary>
+<summary>Page 5（最新#472〜#423）</summary>
 
 `067e61ee-9988-4c5a-9c19-2a6a251068f1`  
 `bdaf3ed6-e4c1-4c17-a531-48f458011b2a`  
@@ -288,7 +286,7 @@
 </details>
 
 <details>
-<summary>📄 Page 6（最新#422〜#373）</summary>
+<summary>Page 6（最新#422〜#373）</summary>
 
 `fab9504f-e19b-4699-b83e-8081a6c3645b`  
 `8ed4685e-6cd6-4200-9c4d-a8218f2fa1c2`  
@@ -344,7 +342,7 @@
 </details>
 
 <details>
-<summary>📄 Page 7（最新#372〜#323）</summary>
+<summary>Page 7（最新#372〜#323）</summary>
 
 `39034f37-612a-4e2a-a70c-d15b703bbfe0`  
 `0b3ef2e8-47bb-4e23-bb3c-e957e4e554cf`  
@@ -400,7 +398,7 @@
 </details>
 
 <details>
-<summary>📄 Page 8（最新#322〜#273）</summary>
+<summary>Page 8（最新#322〜#273）</summary>
 
 `2a501ca3-cccc-4daa-acac-92e707b44733`  
 `c9b56096-86ec-4c41-a52d-20fd02fb2714`  
@@ -456,7 +454,7 @@
 </details>
 
 <details>
-<summary>📄 Page 9（最新#272〜#223）</summary>
+<summary>Page 9（最新#272〜#223）</summary>
 
 `b78d07cb-9b99-41bd-8e6f-13229720dc45`  
 `4b84af32-09d9-431b-847c-41cbfaa85e7b`  
@@ -512,7 +510,7 @@
 </details>
 
 <details>
-<summary>📄 Page 10（最新#222〜#173）</summary>
+<summary>Page 10（最新#222〜#173）</summary>
 
 `c769a54c-f8eb-4228-824f-feeeefeeffce`  
 `4b62e19f-b1ec-4ef0-852f-9eb08b2c00a0`  
@@ -568,7 +566,7 @@
 </details>
 
 <details>
-<summary>📄 Page 11（最新#172〜#123）</summary>
+<summary>Page 11（最新#172〜#123）</summary>
 
 `afa9e955-d88d-402e-bdea-f48bf0a98423`  
 `737bf13d-f37a-4b59-bc8f-27222bf73550`  
@@ -624,7 +622,7 @@
 </details>
 
 <details>
-<summary>📄 Page 12（最新#122〜#73）</summary>
+<summary>Page 12（最新#122〜#73）</summary>
 
 `b82d6b5e-91d8-46cb-811b-d7ebcd2fe8f2`  
 `18589170-dec3-4a9b-b52d-816d81a721a0`  
@@ -680,7 +678,7 @@
 </details>
 
 <details>
-<summary>📄 Page 13（最新#72〜#23）</summary>
+<summary>Page 13（最新#72〜#23）</summary>
 
 `233e7dde-de70-40ce-8753-18fa781156cb`  
 `934b3054-37b2-4c79-a634-ea89a9798235`  
@@ -736,7 +734,7 @@
 </details>
 
 <details>
-<summary>📄 Page 14（最新#22〜#1）</summary>
+<summary>Page 14（最新#22〜#1）</summary>
 
 `4925f0d6-eee5-49f8-93ff-fed642c4662e`  
 `24e14d7f-edf8-4e2b-9dc4-712f5af688a6`  
