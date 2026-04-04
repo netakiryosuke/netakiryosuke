@@ -81,10 +81,25 @@ def append_uuids(uuids: list[str], count: int) -> list[str]:
     return uuids + new_uuids
 
 
-def generate_readme(uuids: list[str], total_contributions: int) -> str:
+def check_duplicates(uuids: list[str]) -> list[str]:
+    """uuids.txt内の重複UUIDを返す。"""
+    seen: set[str] = set()
+    duplicates: list[str] = []
+    for u in uuids:
+        if u in seen:
+            duplicates.append(u)
+        else:
+            seen.add(u)
+    return duplicates
+
+
+def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str]) -> str:
     """README.mdの内容を生成する。"""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     total_uuids = len(uuids)
+
+    # 新しく発行された順（末尾が最新）を逆順にしてPage1に最新を表示する
+    display_uuids = list(reversed(uuids))
     total_pages = (total_uuids + PAGE_SIZE - 1) // PAGE_SIZE
 
     lines = [
@@ -99,17 +114,30 @@ def generate_readme(uuids: list[str], total_contributions: int) -> str:
         "",
     ]
 
+    if duplicates:
+        lines += [
+            "---",
+            "",
+            "## ⚠️ 重複しました。アカウントを削除してください。",
+            "",
+            "以下のUUIDが重複しています：",
+            "",
+        ]
+        for dup in duplicates:
+            lines.append(f"- `{dup}`")
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
     for page in range(total_pages):
         start = page * PAGE_SIZE
         end = min(start + PAGE_SIZE, total_uuids)
+        lines.append("<details>")
         lines.append(
-            f"<details>"
-        )
-        lines.append(
-            f"<summary>📄 Page {page + 1}（#{start + 1}〜#{end}）</summary>"
+            f"<summary>📄 Page {page + 1}（最新#{total_uuids - start}〜#{total_uuids - end + 1}）</summary>"
         )
         lines.append("")
-        for u in uuids[start:end]:
+        for u in display_uuids[start:end]:
             lines.append(f"`{u}`  ")
         lines.append("")
         lines.append("</details>")
@@ -134,7 +162,13 @@ def main() -> None:
     uuids = append_uuids(uuids, total)
     print(f"UUID数（追記後）: {len(uuids)}")
 
-    readme = generate_readme(uuids, total)
+    duplicates = check_duplicates(uuids)
+    if duplicates:
+        print(f"⚠️  重複UUID検知: {duplicates}")
+    else:
+        print("重複なし ✅")
+
+    readme = generate_readme(uuids, total, duplicates)
     README_FILE.write_text(readme)
     print("README.md を更新しました")
 
