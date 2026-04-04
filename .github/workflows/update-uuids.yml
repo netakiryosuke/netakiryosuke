@@ -2,16 +2,18 @@ name: Update UUID Profile
 
 on:
   schedule:
-    # 毎日 UTC 0:00 に実行
-    - cron: '0 0 * * *'
+    # 毎日 JST 0:00 (= UTC 15:00) に実行
+    - cron: '0 15 * * *'
   workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
 
