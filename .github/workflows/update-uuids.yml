@@ -37,5 +37,5 @@ jobs:
           # 変更がなければ何もしない
           git diff --cached --quiet && echo "No changes" && exit 0
           TOTAL=$(wc -l < uuids.txt)
-          git commit -m "Update UUIDs to ${TOTAL} ($(date -u +%Y-%m-%d))"
+          git commit -m "Update UUIDs to ${TOTAL} ($(TZ='Asia/Tokyo' date +%Y-%m-%d))"
           git push
