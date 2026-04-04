@@ -3,7 +3,7 @@ name: Update UUID Profile
 on:
   schedule:
     # 24時間ごとに実行
-    - cron: '0 0 * * *'
+    - cron: '0 */24 * * *'
   workflow_dispatch:
 
 permissions: {}
