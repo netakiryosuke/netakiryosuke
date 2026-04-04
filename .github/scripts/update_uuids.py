@@ -19,8 +19,10 @@ README_FILE = REPO_ROOT / "README.md"
 ACCOUNT_CREATED_YEAR = 2025
 
 
-def get_total_contributions(token: str) -> int:
-    """GraphQL APIで全期間のContribution数を取得する。"""
+def get_total_contributions() -> int:
+    """GraphQL APIで全期間のContribution数を取得する。
+    認証には環境変数 GH_TOKEN を使用すること（gh CLI が自動参照）。
+    """
     current_year = datetime.now(timezone.utc).year
     total = 0
 
@@ -42,18 +44,35 @@ def get_total_contributions(token: str) -> int:
         }
         payload = json.dumps({"query": query, "variables": variables})
 
-        result = subprocess.run(
-            ["gh", "api", "graphql", "--input", "-"],
-            input=payload,
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        data = json.loads(result.stdout)
-        count = (
-            data["data"]["viewer"]["contributionsCollection"]
-            ["contributionCalendar"]["totalContributions"]
-        )
+        try:
+            result = subprocess.run(
+                ["gh", "api", "graphql", "--input", "-"],
+                input=payload,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"gh コマンドが失敗しました (year={year}): {e.stderr}") from e
+
+        try:
+            data = json.loads(result.stdout)
+        except json.JSONDecodeError as e:
+            raise RuntimeError(f"APIレスポンスのパースに失敗: {result.stdout!r}") from e
+
+        if "errors" in data:
+            raise RuntimeError(f"GraphQL エラー (year={year}): {data['errors']}")
+
+        try:
+            count = (
+                data["data"]["viewer"]["contributionsCollection"]
+                ["contributionCalendar"]["totalContributions"]
+            )
+        except KeyError as e:
+            raise RuntimeError(
+                f"想定外のレスポンス構造 (year={year}): キー {e} が存在しない\n{data}"
+            ) from e
+
         total += count
 
     return total
@@ -145,13 +164,17 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
 
 
 def main() -> None:
-    token = os.environ.get("GITHUB_TOKEN", "")
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     if not token:
-        # ローカル実行時はghコマンドの認証情報を使う
-        pass
+        import sys
+        print(
+            "警告: GH_TOKEN / GITHUB_TOKEN が未設定です。"
+            "gh CLI のログイン済みセッションを使用します。",
+            file=sys.stderr,
+        )
 
     print("Contribution数を取得中...")
-    total = get_total_contributions(token)
+    total = get_total_contributions()
     print(f"  -> {total} contributions")
 
     uuids = load_uuids()
