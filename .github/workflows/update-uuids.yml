@@ -2,8 +2,8 @@ name: Update UUID Profile
 
 on:
   schedule:
-    # 毎日 JST 0:00 (= UTC 15:00) に実行
-    - cron: '0 15 * * *'
+    # 24時間ごとに実行
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions: {}

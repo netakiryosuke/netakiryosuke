@@ -8,8 +8,10 @@ import json
 import os
 import subprocess
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+JST = timezone(timedelta(hours=9))
 
 LATEST_DISPLAY_COUNT = 10
 REPO_ROOT = Path(__file__).parent.parent.parent
@@ -143,7 +145,7 @@ LATEST_DISPLAY_COUNT = 10
 
 def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str], closest: tuple[int, int, int, int]) -> str:
     """README.mdの内容を生成する。"""
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    now = datetime.now(JST).strftime("%Y-%m-%d")
     total_uuids = len(uuids)
 
     # 新しく発行された順（末尾が最新）を逆順にして最新を先頭に表示する
@@ -158,7 +160,7 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         "",
         "このアカウントの GitHub Contribution の数だけUUID v4を発行します。",
         "",
-        "毎日 0:00（JST）に生成を行い、衝突した場合このアカウントを削除します。",
+        "毎日更新を行い、衝突した場合このアカウントを削除します。",
         "",
         f"> Contribution数: {total_contributions}  ",
         f"> 発行UUID数: {total_uuids}  ",
