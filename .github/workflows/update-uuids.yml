@@ -24,8 +24,6 @@ jobs:
 
       - name: Run update script
         env:
-          # GITHUB_TOKEN はリポジトリ権限のみのため、contributionsCollection の取得には
-          # read:user スコープを持つ PAT（PROFILE_TOKEN）が必要
           GH_TOKEN: ${{ secrets.PROFILE_TOKEN }}
         run: python .github/scripts/update_uuids.py
 

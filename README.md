@@ -1,27 +1,33 @@
 ## Hi there 👋
 
-このアカウントの GitHub Contribution の数と同じ数だけUUID v4を発行します。
-毎日 0:00（JST）に生成を行い、重複した場合このアカウントを削除します。
+このアカウントの GitHub Contribution の数だけUUID v4を発行します。
 
-> Contribution数: 690  
-> 発行UUID数: 690  
-> 重複: ✅ なし  
+毎日 0:00（JST）に生成を行い、衝突した場合このアカウントを削除します。
+
+> Contribution数: 694  
+> 発行UUID数: 694  
+> 衝突: ✅ なし  
 > 最終更新: 2026-04-04
 
+### 直近 10 件の UUID
+`0d9b7051-9df4-47b2-9f75-bcb54d1b956a`  
+`3fc016a5-c5c1-43e8-b903-e183b62ef69e`  
+`a59e42ac-cfb1-4f4d-92b0-b1343a56a561`  
+`0b01dc03-544c-4c55-a72a-85295d22d83d`  
 `b1cd4473-01e8-42eb-b72b-14f99d81475e`  
 `b47b57bf-ce04-4876-b4ae-d640c25ed073`  
 `037e86f4-250b-4dbf-823f-316dcc68fd83`  
 `0dc9e45e-68cc-4a42-bd13-a41e9a3ef438`  
 `b84be48c-3341-4fa4-9819-f91806adc962`  
 `23e1e1e7-863c-4400-950e-f81e95ec6384`  
+
+<details>
+<summary>過去のUUID（684件）</summary>
+
 `ab4facc1-6539-4e50-be5c-895b98f000d9`  
 `f5701b17-cde9-4df6-9dc5-e3a4c0147fb0`  
 `bdfe20b7-8276-4e7e-bca1-87074348c4c8`  
 `50ab7a80-8f73-448a-9608-c1a951a7e455`  
-
-<details>
-<summary>過去のUUID（680件）</summary>
-
 `1e39f9b0-1b11-47b4-9c90-4ef277e5b3e5`  
 `9e03c6d3-d3fe-4595-8a82-121aae233033`  
 `7ee30f96-8290-45b0-830e-60d910c7d1bd`  

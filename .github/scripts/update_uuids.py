@@ -156,12 +156,13 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
     lines = [
         "## Hi there 👋",
         "",
-        "このアカウントの GitHub Contribution の数と同じ数だけUUID v4を発行します。",
-        "毎日 0:00（JST）に生成を行い、重複した場合このアカウントを削除します。",
+        "このアカウントの GitHub Contribution の数だけUUID v4を発行します。",
+        "",
+        "毎日 0:00（JST）に生成を行い、衝突した場合このアカウントを削除します。",
         "",
         f"> Contribution数: {total_contributions}  ",
         f"> 発行UUID数: {total_uuids}  ",
-        f"> 重複: {dup_status}  ",
+        f"> 衝突: {dup_status}  ",
         f"> 最終更新: {now}",
         "",
     ]
@@ -170,9 +171,9 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         lines += [
             "---",
             "",
-            "## ⚠️ 重複しました。アカウントを削除してください。",
+            "## ⚠️ 衝突しました。アカウントを削除してください。",
             "",
-            "以下のUUIDが重複しています：",
+            "以下のUUIDが衝突しています：",
             "",
         ]
         for dup in duplicates:
@@ -182,6 +183,7 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         lines.append("")
 
     # 最新10件はそのまま表示
+    lines.append("### 直近 10 件の UUID")
     for u in latest:
         lines.append(f"`{u}`  ")
     lines.append("")
@@ -245,9 +247,9 @@ def main() -> None:
 
     duplicates = check_duplicates(uuids)
     if duplicates:
-        print(f"⚠️  重複UUID検知: {duplicates}")
+        print(f"⚠️  衝突UUID検知: {duplicates}")
     else:
-        print("重複なし ✅")
+        print("衝突なし ✅")
 
     print("最近接ペアを探索中...")
     closest = find_closest_pair(uuids)
