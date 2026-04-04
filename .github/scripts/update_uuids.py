@@ -132,7 +132,7 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         end = min(start + PAGE_SIZE, total_uuids)
         lines.append("<details>")
         lines.append(
-            f"<summary>📄 Page {page + 1}（最新#{total_uuids - start}〜#{total_uuids - end + 1}）</summary>"
+            f"<summary>Page {page + 1}（最新#{total_uuids - start}〜#{total_uuids - end + 1}）</summary>"
         )
         lines.append("")
         for u in display_uuids[start:end]:
