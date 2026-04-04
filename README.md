@@ -1,6 +1,6 @@
 ## Hi there 👋
 
-このアカウントの GitHub Contribution の数（全期間累計）と同じ数だけUUID v4を発行します。
+このアカウントの GitHub Contribution の数と同じ数だけUUID v4を発行します。
 毎日 0:00（JST）に生成を行い、重複した場合このアカウントを削除します。
 
 > Contribution数: 683  
