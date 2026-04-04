@@ -203,7 +203,7 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         ua = uuids[ci]
         ub = uuids[cj]
         lines.append("<details>")
-        lines.append(f"<summary>👯 最も似ているUUIDペア（{uuid_len}文字中{matches}文字一致）</summary>")
+        lines.append(f"<summary>最も似ていたUUIDペア（{uuid_len}文字中{matches}文字一致）</summary>")
         lines.append("")
         lines.append(f"- #{ci + 1}: `{ua}`")
         lines.append(f"- #{cj + 1}: `{ub}`")

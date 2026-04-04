@@ -704,7 +704,7 @@
 </details>
 
 <details>
-<summary>👯 最も似ているUUIDペア（32文字中12文字一致）</summary>
+<summary>最も似ていたUUIDペア（32文字中12文字一致）</summary>
 
 - #309: `5a4f15e4-1948-47b3-bda9-b732918d8526`
 - #419: `5f4816ec-2a4a-4741-b192-b7d2dead96ff`
