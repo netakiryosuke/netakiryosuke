@@ -5,7 +5,6 @@ Contributionが増えたら不足分だけuuids.txtに追記する。
 """
 
 import asyncio
-import os
 import re
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -30,7 +29,6 @@ async def fetch_year_contributions(page, username: str, year: int) -> int:
     h2 = page.locator("h2#js-contribution-activity-description")
     await h2.wait_for(timeout=15000)
 
-    # レンダリング済みのHTMLをBeautifulSoupに渡す
     html = await page.content()
     soup = BeautifulSoup(html, "html.parser")
     
@@ -53,11 +51,10 @@ async def get_total_contributions() -> int:
 
         await browser.close()
 
-    return total
+    return total - 1
         
 
 def load_uuids() -> list[str]:
-    """既存のUUIDをuuids.txtから読み込む。"""
     if not UUIDS_FILE.exists():
         return []
     lines = UUIDS_FILE.read_text().splitlines()
@@ -65,7 +62,6 @@ def load_uuids() -> list[str]:
 
 
 def append_uuids(uuids: list[str], count: int) -> list[str]:
-    """不足分のUUID v4を生成して追記し、全件を返す。"""
     shortage = count - len(uuids)
     if shortage <= 0:
         return uuids
@@ -79,7 +75,6 @@ def append_uuids(uuids: list[str], count: int) -> list[str]:
 
 
 def check_duplicates(uuids: list[str]) -> list[str]:
-    """uuids.txt内の重複UUIDを返す。"""
     seen: set[str] = set()
     duplicates: list[str] = []
     for u in uuids:
@@ -91,10 +86,6 @@ def check_duplicates(uuids: list[str]) -> list[str]:
 
 
 def find_closest_pair(uuids: list[str]) -> tuple[int, int, int, int]:
-    """ハミング類似度が最大のペアを返す。
-    返り値: (インデックスi, インデックスj, 一致文字数, UUID長)
-    インデックスはuuids.txt上の行番号（0始まり）に対応。
-    """
     # ハイフン除去した32文字で比較
     normalized = [u.replace("-", "") for u in uuids]
     uuid_len = len(normalized[0]) if normalized else 32
@@ -117,11 +108,9 @@ def find_closest_pair(uuids: list[str]) -> tuple[int, int, int, int]:
 
 
 def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str], closest: tuple[int, int, int, int]) -> str:
-    """README.mdの内容を生成する。"""
     now = datetime.now(JST).strftime("%Y-%m-%d")
     total_uuids = len(uuids)
 
-    # 新しく発行された順（末尾が最新）を逆順にして最新を先頭に表示する
     display_uuids = list(reversed(uuids))
     latest = display_uuids[:LATEST_DISPLAY_COUNT]
     rest = display_uuids[LATEST_DISPLAY_COUNT:]
@@ -157,13 +146,11 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         lines.append("---")
         lines.append("")
 
-    # 最新10件はそのまま表示
     lines.append("### 直近 10 件の UUID")
     for u in latest:
         lines.append(f"`{u}`  ")
     lines.append("")
 
-    # 残りは折りたたみ
     if rest:
         lines.append("<details>")
         lines.append(f"<summary>過去のUUID（{len(rest)}件）</summary>")
@@ -185,7 +172,7 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
         lines.append(f"- #{ci + 1}: `{ua}`")
         lines.append(f"- #{cj + 1}: `{ub}`")
         lines.append("")
-        # どの位置が一致しているか可視化（ハイフン除去で比較）
+
         na, nb = ua.replace("-", ""), ub.replace("-", "")
         highlight = "".join("^" if a == b else " " for a, b in zip(na, nb))
         lines.append("```")
@@ -201,15 +188,6 @@ def generate_readme(uuids: list[str], total_contributions: int, duplicates: list
 
 
 def main() -> None:
-    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
-    if not token:
-        import sys
-        print(
-            "警告: GH_TOKEN / GITHUB_TOKEN が未設定です。"
-            "gh CLI のログイン済みセッションを使用します。",
-            file=sys.stderr,
-        )
-
     print("Contribution数を取得中...")
     total = asyncio.run(get_total_contributions())
     print(f"  -> {total} contributions")

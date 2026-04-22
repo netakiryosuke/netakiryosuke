@@ -6,8 +6,6 @@ on:
     - cron: '0 */24 * * *'
   workflow_dispatch:
 
-permissions: {}
-
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -28,8 +26,6 @@ jobs:
           playwright install chromium --with-deps
 
       - name: Run update script
-        env:
-          GH_TOKEN: ${{ secrets.PROFILE_TOKEN }}
         run: python .github/scripts/update_uuids.py
 
       - name: Commit and push if changed
@@ -39,7 +35,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add uuids.txt README.md
-          # 変更がなければ何もしない
           git diff --cached --quiet && echo "No changes" && exit 0
           TOTAL=$(wc -l < uuids.txt)
           git commit -m "Update UUIDs to ${TOTAL} ($(TZ='Asia/Tokyo' date +%Y-%m-%d))"
