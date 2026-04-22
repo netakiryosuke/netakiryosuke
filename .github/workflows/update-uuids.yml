@@ -21,9 +21,18 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: |
-          pip install beautifulsoup4 playwright
-          playwright install chromium --with-deps
+        run: pip install beautifulsoup4 playwright
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: playwright install chromium --with-deps
 
       - name: Run update script
         run: python .github/scripts/update_uuids.py
