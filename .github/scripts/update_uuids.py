@@ -4,12 +4,14 @@ GitHubの全期間Contribution数だけUUID v4を発行し、README.mdに表示�
 Contributionが増えたら不足分だけuuids.txtに追記する。
 """
 
-import json
+import asyncio
 import os
-import subprocess
+import re
 import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from bs4 import BeautifulSoup
+from playwright.async_api import async_playwright
 
 JST = timezone(timedelta(hours=9))
 
@@ -21,64 +23,38 @@ README_FILE = REPO_ROOT / "README.md"
 ACCOUNT_CREATED_YEAR = 2025
 
 
-def get_total_contributions() -> int:
-    """GraphQL APIで全期間のContribution数を取得する。
-    認証には環境変数 GH_TOKEN を使用すること（gh CLI が自動参照）。
-    """
+async def fetch_year_contributions(page, username: str, year: int) -> int:
+    url = f"https://github.com/{username}?tab=overview&from={year}-01-01&to={year}-12-31"
+    await page.goto(url, wait_until="networkidle")
+
+    h2 = page.locator("h2#js-contribution-activity-description")
+    await h2.wait_for(timeout=15000)
+
+    # レンダリング済みのHTMLをBeautifulSoupに渡す
+    html = await page.content()
+    soup = BeautifulSoup(html, "html.parser")
+    
+    h2_elem = soup.find("h2", id="js-contribution-activity-description")
+    match = re.search(r"([\d,]+)\s+contributions?", h2_elem.text.strip())
+    
+    return int(match.group(1).replace(",", ""))
+
+
+async def get_total_contributions() -> int:
     current_year = datetime.now(timezone.utc).year
     total = 0
 
-    for year in range(ACCOUNT_CREATED_YEAR, current_year + 1):
-        query = """
-        query($from: DateTime!, $to: DateTime!) {
-          viewer {
-            contributionsCollection(from: $from, to: $to) {
-              contributionCalendar {
-                totalContributions
-              }
-            }
-          }
-        }
-        """
-        variables = {
-            "from": f"{year}-01-01T00:00:00Z",
-            "to": f"{year}-12-31T23:59:59Z",
-        }
-        payload = json.dumps({"query": query, "variables": variables})
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
 
-        try:
-            result = subprocess.run(
-                ["gh", "api", "graphql", "--input", "-"],
-                input=payload,
-                capture_output=True,
-                text=True,
-                check=True,
-            )
-        except subprocess.CalledProcessError as e:
-            raise RuntimeError(f"gh コマンドが失敗しました (year={year}): {e.stderr}") from e
+        for year in range(ACCOUNT_CREATED_YEAR, current_year + 1):
+            total += await fetch_year_contributions(page, "netakiryosuke", year)
 
-        try:
-            data = json.loads(result.stdout)
-        except json.JSONDecodeError as e:
-            raise RuntimeError(f"APIレスポンスのパースに失敗: {result.stdout!r}") from e
-
-        if "errors" in data:
-            raise RuntimeError(f"GraphQL エラー (year={year}): {data['errors']}")
-
-        try:
-            count = (
-                data["data"]["viewer"]["contributionsCollection"]
-                ["contributionCalendar"]["totalContributions"]
-            )
-        except KeyError as e:
-            raise RuntimeError(
-                f"想定外のレスポンス構造 (year={year}): キー {e} が存在しない\n{data}"
-            ) from e
-
-        total += count
+        await browser.close()
 
     return total
-
+        
 
 def load_uuids() -> list[str]:
     """既存のUUIDをuuids.txtから読み込む。"""
@@ -138,9 +114,6 @@ def find_closest_pair(uuids: list[str]) -> tuple[int, int, int, int]:
                 best_j = j
 
     return best_i, best_j, best_matches, uuid_len
-
-
-LATEST_DISPLAY_COUNT = 10
 
 
 def generate_readme(uuids: list[str], total_contributions: int, duplicates: list[str], closest: tuple[int, int, int, int]) -> str:
@@ -238,7 +211,7 @@ def main() -> None:
         )
 
     print("Contribution数を取得中...")
-    total = get_total_contributions()
+    total = asyncio.run(get_total_contributions())
     print(f"  -> {total} contributions")
 
     uuids = load_uuids()

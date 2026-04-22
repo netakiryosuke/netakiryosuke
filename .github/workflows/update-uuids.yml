@@ -22,6 +22,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install dependencies
+        run: |
+          pip install beautifulsoup4 playwright
+          playwright install chromium --with-deps
+
       - name: Run update script
         env:
           GH_TOKEN: ${{ secrets.PROFILE_TOKEN }}
