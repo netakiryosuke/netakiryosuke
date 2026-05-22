@@ -4,15 +4,26 @@
 
 毎日更新を行い、衝突した場合このアカウントを削除します。
 
-> Contribution数: 935  
-> 発行UUID数: 935  
+> Contribution数: 942  
+> 発行UUID数: 942  
 > 衝突: ✅ なし  
-> 最終更新: 2026-05-21
+> 最終更新: 2026-05-22
 
 ### 直近 10 件の UUID
+`57a1efde-3d9a-425d-ad08-e87d8eea0258`  
+`19305dee-981e-4f1c-a74a-59c285ad3fc8`  
+`002c558d-2d4d-40a4-84c2-24c9a5ad3da2`  
+`eee4bb4a-a732-418b-9163-317ae0c117e4`  
+`d7970bf5-6c2f-45d8-af31-fa29e09d48ff`  
+`320185ef-73f8-4655-84d1-11af512e695b`  
+`d97601d2-46fc-4e04-808e-37162d457bf0`  
 `55189260-61a1-4a8a-ac23-575102bbb8ea`  
 `2057b003-058c-4eee-b840-c7c6a343d78d`  
 `3940c477-6509-407a-8f15-956deb4f9939`  
+
+<details>
+<summary>過去のUUID（932件）</summary>
+
 `3e8ffecd-7b40-49a2-9ad2-6a997ff8387e`  
 `2e5dd195-1ad4-40cd-81ff-6f363c2a9610`  
 `485a0b20-258e-4c95-a2f1-6d497dbe9798`  
@@ -20,10 +31,6 @@
 `adc2ce2b-0943-46b5-9849-11fceccd97a8`  
 `ae5cba9e-42ab-4d6c-a3d1-5fad4c66dd3f`  
 `5770c242-33a2-4fe5-ac4b-235ca2c04653`  
-
-<details>
-<summary>過去のUUID（925件）</summary>
-
 `a5b13100-7229-4632-a1bf-c5e052408d7e`  
 `151fd253-edf5-4ab0-aaa5-2215e6d29fe0`  
 `a927949b-aa62-4fa5-877d-0641dc942cbc`  
